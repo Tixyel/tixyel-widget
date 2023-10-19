@@ -1,0 +1,96 @@
+{
+  "name": "tixyel-widget",
+  "displayName": "widget extension for vscode",
+  "description": "Widget helper",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tixyel-widget.templateWidget",
+        "title": "Create widget template inside"
+      },
+      {
+        "command": "tixyel-widget.completeTemplateWidget",
+        "title": "Create complete widget template"
+      },
+      {
+        "command": "tixyel-widget.generateFinishedFiles",
+        "title": "Generate obfuscated code"
+      },
+      {
+        "command": "tixyel-widget.finishThisWidget",
+        "title": "Finish this widget"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "tixyel-widget.templateWidget",
+          "when": "false"
+        },
+        {
+          "command": "tixyel-widget.completeTemplateWidget",
+          "when": "false"
+        },
+        {
+          "command": "tixyel-widget.generateFinishedFiles",
+          "when": "false"
+        },
+        {
+          "command": "tixyel-widget.finishThisWidget",
+          "when": "false"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "tixyel-widget.templateWidget",
+          "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
+          "group": "tixyel"
+        },
+        {
+          "command": "tixyel-widget.completeTemplateWidget",
+          "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
+          "group": "tixyel"
+        },
+        {
+          "command": "tixyel-widget.generateFinishedFiles",
+          "when": "explorerResourceIsFolder && resourceFilename == 'development'",
+          "group": "tixyel"
+        },
+        {
+          "command": "tixyel-widget.finishThisWidget",
+          "when": "explorerResourceIsFolder && resourceFilename == 'finished'",
+          "group": "tixyel"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.82.0",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "clean-css": "^5.3.2",
+    "javascript-obfuscator": "^4.1.0",
+    "jszip": "^3.10.1"
+  }
+}
