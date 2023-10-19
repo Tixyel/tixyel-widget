@@ -3,6 +3,7 @@
   "displayName": "widget extension for vscode",
   "publisher": "Tixyel",
   "description": "Widget helper",
+  "icon": "images/icon.png",
   "version": "0.0.1",
   "repository": {
     "type": "git",
