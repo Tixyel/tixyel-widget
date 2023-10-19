@@ -5,18 +5,6 @@ const path = require('path')
 
 // O que fazer?
 
-/**
- * Pegar pasta FINISHED e:
- *
- * Obfuscator em script.jsx ou script.js
- * Minify em style.css
- * Separar MAIN do html e adicionar <script src="{simulation}"></script> no topo
- * E outros scripts dentro de body
- *
- * Criar .zip com ['html.txt', 'css.txt', 'js.txt', 'fields.txt', 'data.txt']
- *
- */
-
 module.exports = {
   name: 'finishThisWidget',
   run: async (data) => {
