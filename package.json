@@ -38,6 +38,10 @@
       {
         "command": "tixyel-widget.finishThisWidget",
         "title": "Finish this widget"
+      },
+      {
+        "command": "tixyel-widget.generateSimulationRaw",
+        "title": "Generate simulation raw"
       }
     ],
     "menus": {
@@ -61,31 +65,40 @@
         {
           "command": "tixyel-widget.finishThisWidget",
           "when": "false"
+        },
+        {
+          "command": "tixyel-widget.generateSimulationRaw",
+          "when": "false"
         }
       ],
       "explorer/context": [
         {
           "command": "tixyel-widget.templateWidget",
           "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
-          "group": "tixyel"
+          "group": "tixyel-template"
         },
         {
           "command": "tixyel-widget.completeTemplateWidget",
           "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
-          "group": "tixyel"
+          "group": "tixyel-template"
         },
         {
           "command": "tixyel-widget.generateFinishedFiles",
           "when": "explorerResourceIsFolder && resourceFilename == 'development'",
-          "group": "tixyel"
+          "group": "tixyel-obfuscator"
         },
         {
           "command": "tixyel-widget.generateWidgetIo",
           "when": "explorerResourceIsFolder && resourceFilename == 'finished'",
-          "group": "tixyel"
+          "group": "tixyel-finish"
         },
         {
           "command": "tixyel-widget.finishThisWidget",
+          "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
+          "group": "tixyel-finish"
+        },
+        {
+          "command": "tixyel-widget.generateSimulationRaw",
           "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
           "group": "tixyel"
         }
@@ -110,6 +123,7 @@
   "dependencies": {
     "clean-css": "^5.3.2",
     "javascript-obfuscator": "^4.1.0",
-    "jszip": "^3.10.1"
+    "jszip": "^3.10.1",
+    "node-fetch": "^2.7.0"
   }
 }

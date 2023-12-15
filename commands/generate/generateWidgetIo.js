@@ -1,8 +1,8 @@
 const vscode = require('vscode')
 const fs = require('fs')
 
-const { files } = require('../data/widgetZip')
-const { writeZip, getAllFilesFromFolder } = require('../functions/manageFs')
+const { files } = require('../../data/widgetZip')
+const { writeZip, getAllFilesFromFolder } = require('../../functions/manageFs')
 
 module.exports = {
   name: 'generateWidgetIo',

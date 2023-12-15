@@ -1,8 +1,8 @@
 const vscode = require('vscode')
 
-const { files: finishedFiles } = require('../data/finishedFiles')
-const { createFile, getAllFilesFromFolder } = require('../functions/manageFs')
-const obfuscateFiles = require('../functions/obfuscateFiles')
+const { files: finishedFiles } = require('../../data/finishedFiles')
+const { createFile, getAllFilesFromFolder } = require('../../functions/manageFs')
+const obfuscateFiles = require('../../functions/obfuscateFiles')
 
 module.exports = {
   name: 'generateFinishedFiles',

@@ -1,7 +1,7 @@
 const vscode = require('vscode')
 
-const { files: dirs } = require('../data/fullWidgetTemplate')
-const { createDir, createFile } = require('../functions/manageFs')
+const { files: dirs } = require('../../data/fullWidgetTemplate')
+const { createDir, createFile } = require('../../functions/manageFs')
 
 module.exports = {
   name: 'templateWidget',
