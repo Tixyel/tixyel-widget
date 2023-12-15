@@ -32,6 +32,10 @@
         "title": "Generate obfuscated code"
       },
       {
+        "command": "tixyel-widget.generateWidgetIo",
+        "title": "Generate widget.io"
+      },
+      {
         "command": "tixyel-widget.finishThisWidget",
         "title": "Finish this widget"
       }
@@ -48,6 +52,10 @@
         },
         {
           "command": "tixyel-widget.generateFinishedFiles",
+          "when": "false"
+        },
+        {
+          "command": "tixyel-widget.generateWidgetIo",
           "when": "false"
         },
         {
@@ -72,8 +80,13 @@
           "group": "tixyel"
         },
         {
-          "command": "tixyel-widget.finishThisWidget",
+          "command": "tixyel-widget.generateWidgetIo",
           "when": "explorerResourceIsFolder && resourceFilename == 'finished'",
+          "group": "tixyel"
+        },
+        {
+          "command": "tixyel-widget.finishThisWidget",
+          "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
           "group": "tixyel"
         }
       ]
