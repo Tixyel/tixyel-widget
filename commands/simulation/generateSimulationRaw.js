@@ -1,18 +1,16 @@
 const vscode = require('vscode')
-
-const fetch = require('node-fetch')
 const path = require('path')
 const fs = require('fs')
-const { createFile } = require('../../functions/manageFs')
 
-const { runUpdate, runCreate } = require('../../functions/gistManage')
+const { createFile } = require('../../functions/manageFs')
+const { getGists, runUpdate, runCreate } = require('../../functions/gistManage')
 
 module.exports = {
   name: 'generateSimulationRaw',
   run: async ({ fsPath }) => {
     if (!vscode.workspace.workspaceFolders) return vscode.window.showInformationMessage('Você precisa abrir uma workspace ou uma pasta')
 
-    let token = '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',
+    let token = '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',
       headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -31,11 +29,10 @@ module.exports = {
       })
 
     const updateFields = async (/** @type {String} */ git_raw) => {
-      let cf = fs.readFileSync(fsPath + '\\' + 'development' + '\\' + 'cf.json', 'utf8')
-
       return createFile(
         fsPath + '\\' + 'development' + '\\' + 'cf.json',
-        cf
+        fs
+          .readFileSync(fsPath + '\\' + 'development' + '\\' + 'cf.json', 'utf8')
           .replace(
             /"version":\s*{[^}]+}/,
             `"version": {\n    "type": "hidden",\n    "label": "Simulation ${version}",\n    "group": "Debug Settings"\n  }`,
@@ -47,11 +44,10 @@ module.exports = {
       )
     }
 
-    const callback = function (res) {
+    const callback = function (/** @type {Object} */ res) {
       const { files } = res,
         file = Object.values(files)[0],
-        // eslint-disable-next-line no-unused-vars
-        { content, filename, language, raw_url, type } = file
+        { raw_url } = file
 
       let [pattern, replace] = [
           /^(https?):\/\/gist\.github(?:usercontent)?\.com\/(.+?\/[0-9a-f]+\/raw\/(?:[0-9a-f]+\/)?.+)$/i,
@@ -66,46 +62,13 @@ module.exports = {
       } else return vscode.window.showInformationMessage('Ocorreu algum erro...')
     }
 
-    // const runUpdate = async (/** @type {String} */ id) => {
-    //     // @ts-ignore
-    //     return await fetch('https://api.github.com/gists/' + id, {
-    //       method: 'PATCH',
-    //       headers,
-    //       body,
-    //     })
-    //       .then((res) => res.json())
-    //       .then((res) => {
-    //         callback(res)
-    //       })
-    //   },
-    //   runCreate = async () => {
-    //     // @ts-ignore
-    //     return await fetch('https://api.github.com/gists', {
-    //       method: 'POST',
-    //       headers,
-    //       body,
-    //     })
-    //       .then((res) => res.json())
-    //       .then((res) => {
-    //         callback(res)
-    //       })
-    //   }
+    getGists(headers, async (/** @type {Array} */ res) => {
+      console.log(res)
+      if (res.some(({ description }) => description.includes(version))) {
+        let { id } = res.find(({ description }) => description.includes(version))
 
-    // @ts-ignore
-    await fetch('https://api.github.com/gists', {
-      method: 'GET',
-      headers,
+        runUpdate(id, headers, body, callback)
+      } else runCreate(headers, body, callback)
     })
-      .then((res) => res.json())
-      .then(async (res) => {
-        if (res.some(({ description }) => description.includes(version))) {
-          let { id } = res.find(({ description }) => description.includes(version))
-
-          runUpdate(id)
-        } else {
-          console.log('create')
-          runCreate()
-        }
-      })
   },
 }
