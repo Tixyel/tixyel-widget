@@ -1,12 +1,13 @@
 const vscode = require('vscode')
 
-const { files: dirs, name: sample } = require('../../data/fullWidgetTemplate')
 const { createDir, createFile } = require('../../functions/manageFs')
 
 module.exports = {
   name: 'completeTemplateWidget',
   run: (data = {}) => {
     if (!vscode.workspace.workspaceFolders) return vscode.window.showInformationMessage('Você precisa abrir uma workspace ou uma pasta')
+
+    const { folders: dirs, name: sample } = vscode.workspace.getConfiguration().get('tixyel-widget')['fullWidgetTemplate']
 
     let parentDir = data['fsPath'] + '\\' + sample
 

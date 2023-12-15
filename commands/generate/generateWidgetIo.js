@@ -1,13 +1,14 @@
 const vscode = require('vscode')
 const fs = require('fs')
 
-const { files } = require('../../data/widgetZip')
 const { writeZip, getAllFilesFromFolder } = require('../../functions/manageFs')
 
 module.exports = {
   name: 'generateWidgetIo',
   run: async ({ fsPath }) => {
     if (!vscode.workspace.workspaceFolders) return vscode.window.showInformationMessage('Você precisa abrir uma workspace ou uma pasta')
+
+    const { files } = vscode.workspace.getConfiguration().get('tixyel-widget')['widgetZip']
 
     getAllFilesFromFolder(fsPath).then(async (allFiles) => {
       let createFiles = Object.entries(files).reduce((acc, [key, { fileName, content }]) => {

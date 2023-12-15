@@ -10,14 +10,17 @@ module.exports = {
   run: async ({ fsPath }) => {
     if (!vscode.workspace.workspaceFolders) return vscode.window.showInformationMessage('Você precisa abrir uma workspace ou uma pasta')
 
-    let token = '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',
+    let { token } = vscode.workspace.getConfiguration().get('tixyel-widget')['generateSimulation'],
       headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       }
 
-    let simulation = fs.readFileSync(path.dirname(fsPath) + '\\' + 'simulation.js', 'utf8'),
-      version = simulation.match(/\b(\d+\.\d+\.\d+)\b/g)[0],
+    let simulation = fs.readFileSync(path.dirname(fsPath) + '\\' + 'simulation.js', 'utf8')
+
+    if (!simulation) return vscode.window.showInformationMessage('Você precisa estar próximo a um arquivo de simulação')
+
+    let version = simulation.match(/\b(\d+\.\d+\.\d+)\b/g)[0],
       body = JSON.stringify({
         'description': 'Simulation ' + version,
         'public': false,
@@ -63,12 +66,13 @@ module.exports = {
     }
 
     getGists(headers, async (/** @type {Array} */ res) => {
-      console.log(res)
-      if (res.some(({ description }) => description.includes(version))) {
-        let { id } = res.find(({ description }) => description.includes(version))
+      if (Array.isArray(res)) {
+        if (res.some(({ description }) => description.includes(version))) {
+          let { id } = res.find(({ description }) => description.includes(version))
 
-        runUpdate(id, headers, body, callback)
-      } else runCreate(headers, body, callback)
+          runUpdate(id, headers, body, callback)
+        } else runCreate(headers, body, callback)
+      } else console.error(res)
     })
   },
 }

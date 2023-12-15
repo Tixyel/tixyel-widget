@@ -103,6 +103,154 @@
           "group": "tixyel"
         }
       ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "Tixyel widget helper config",
+      "properties": {
+        "tixyel-widget.fullWidgetTemplate": {
+          "type": "object",
+          "description": "Full widget template settings",
+          "default": {
+            "name": "00 - Widget sample",
+            "folders": [
+              {
+                "name": "development",
+                "files": [
+                  {
+                    "fileName": "index.html",
+                    "content": ""
+                  },
+                  {
+                    "fileName": "script.js",
+                    "content": ""
+                  },
+                  {
+                    "fileName": "style.css",
+                    "content": ""
+                  },
+                  {
+                    "fileName": "cf.json",
+                    "content": "{}"
+                  }
+                ]
+              }
+            ]
+          },
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "",
+              "description": "Nome da pasta do template"
+            },
+            "folders": {
+              "type": "array",
+              "default": [],
+              "description": "Array de pastas para ser criado",
+              "items": {
+                "type": "object",
+                "description": "Pastas e arquivos",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Nome da pasta"
+                  },
+                  "files": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Arquivos para serem criados",
+                    "items": {
+                      "type": "object",
+                      "description": "Arquivo",
+                      "properties": {
+                        "fileName": {
+                          "type": "string",
+                          "default": "",
+                          "description": "Nome do arquivo"
+                        },
+                        "content": {
+                          "type": "string",
+                          "default": "",
+                          "description": "Conteúdo do arquivo"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tixyel-widget.finishedFiles": {
+          "type": "object",
+          "description": "Finished files",
+          "default": {
+            "files": {
+              "CF.txt": {
+                "format": ".json"
+              },
+              "HTML.txt": {
+                "format": ".html"
+              },
+              "CSS.txt": {
+                "format": ".css"
+              },
+              "SCRIPT.txt": {
+                "format": ".js"
+              }
+            }
+          },
+          "properties": {
+            "files": {
+              "type": "object",
+              "default": {},
+              "description": "Arquivos para buscar"
+            }
+          }
+        },
+        "tixyel-widget.widgetZip": {
+          "type": "object",
+          "description": "Finished files",
+          "default": {
+            "files": {
+              "html.txt": {
+                "fileName": "HTML.txt"
+              },
+              "css.txt": {
+                "fileName": "CSS.txt"
+              },
+              "js.txt": {
+                "fileName": "SCRIPT.txt"
+              },
+              "fields.txt": {
+                "fileName": "CF.txt"
+              }
+            }
+          },
+          "properties": {
+            "files": {
+              "type": "object",
+              "default": {},
+              "description": "Arquivos para criar no zip"
+            }
+          }
+        },
+        "tixyel-widget.generateSimulation": {
+          "type": "object",
+          "description": "Finished files",
+          "default": {
+            "token": ""
+          },
+          "properties": {
+            "token": {
+              "type": "string",
+              "default": {},
+              "description": "Seu token gist"
+            }
+          }
+        }
+      }
     }
   },
   "scripts": {

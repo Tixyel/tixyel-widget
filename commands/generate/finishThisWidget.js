@@ -1,8 +1,6 @@
 const vscode = require('vscode')
 const fs = require('fs')
 
-const { files: finishedFiles } = require('../../data/finishedFiles')
-const { files } = require('../../data/widgetZip')
 const { writeZip, getAllFilesFromFolder, createFile } = require('../../functions/manageFs')
 const obfuscateFiles = require('../../functions/obfuscateFiles')
 
@@ -10,6 +8,9 @@ module.exports = {
   name: 'finishThisWidget',
   run: async ({ fsPath }) => {
     if (!vscode.workspace.workspaceFolders) return vscode.window.showInformationMessage('Você precisa abrir uma workspace ou uma pasta')
+
+    const { files: finishedFiles } = vscode.workspace.getConfiguration().get('tixyel-widget')['finishedFiles']
+    const { files } = vscode.workspace.getConfiguration().get('tixyel-widget')['widgetZip']
 
     getAllFilesFromFolder(fsPath + '\\' + 'development').then((allFiles) =>
       obfuscateFiles(allFiles, finishedFiles).then(async (contents) => {
