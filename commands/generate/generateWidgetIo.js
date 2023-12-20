@@ -17,7 +17,7 @@ module.exports = {
         return acc
       }, {})
 
-      writeZip(fsPath.replace('finished', 'widget.io\\'), { createFiles }).then(() => {
+      writeZip(fsPath.replace('finished', 'widget.io' + '\\'), { createFiles }).then(() => {
         vscode.window.showInformationMessage('Arquivo .zip criado com sucesso!')
       })
     })

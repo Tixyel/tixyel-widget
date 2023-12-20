@@ -14,20 +14,20 @@ module.exports = {
 
     getAllFilesFromFolder(fsPath + '\\' + 'development').then((allFiles) =>
       obfuscateFiles(allFiles, finishedFiles).then(async (contents) => {
-        for await (const [key, content] of contents) {
-          await createFile(fsPath + '\\' + 'finished\\' + key, content)
+        for await (let [key, content] of contents) {
+          await createFile(fsPath + '\\' + 'finished' + '\\' + key, content)
         }
 
         vscode.window.showInformationMessage('Arquivos de finalização gerados!')
 
-        getAllFilesFromFolder(fsPath + '\\' + 'finished').then(async (allFiles) => {
+        getAllFilesFromFolder(fsPath + '\\' + 'finished').then(async () => {
           let createFiles = Object.entries(files).reduce((acc, [key, { fileName, content }]) => {
-            acc[key] = { content: content || fs.readFileSync(fileName ? allFiles.find(({ fileName: name }) => name == fileName).path : '', 'utf8') }
+            acc[key] = { content: content || contents.find(([key]) => key == fileName)[1] }
 
             return acc
           }, {})
 
-          writeZip(fsPath + '\\widget.io\\', { createFiles }).then(() => {
+          writeZip(fsPath + '\\' + 'widget.io' + '\\', { createFiles }).then(() => {
             vscode.window.showInformationMessage('Arquivo .zip criado com sucesso!')
           })
         })
