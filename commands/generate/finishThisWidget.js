@@ -1,5 +1,4 @@
 const vscode = require('vscode')
-const fs = require('fs')
 
 const { writeZip, getAllFilesFromFolder, createFile } = require('../../functions/manageFs')
 const obfuscateFiles = require('../../functions/obfuscateFiles')
