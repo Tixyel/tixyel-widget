@@ -76,6 +76,8 @@ module.exports = {
 
     getGists(headers, async (/** @type {Array} */ res) => {
       if (Array.isArray(res)) {
+        res = res.filter(({ description }) => description.includes('Simulation')).slice(0, 5)
+
         if (res.some(({ description }) => description.match(regex.version)[0] > version))
           updateSimulation(res.find(({ description }) => description.match(regex.version)[0] > version))
         else if (res.some(({ description }) => description.includes(version)))
