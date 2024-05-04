@@ -9,13 +9,14 @@ const commands = [
   require('./commands/generate/generateFinishedFiles'),
   require('./commands/generate/finishThisWidget'),
   require('./commands/simulation/generateSimulationRaw'),
+  require('./commands/simulation/updateSimulation'),
 ]
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
-  const [templateWidget, cTemplateWidget, generateWidgetIo, finishedFiles, finishThisWidget, generateSimulationRaw] = commands
+  const [templateWidget, cTemplateWidget, generateWidgetIo, finishedFiles, finishThisWidget, generateSimulationRaw, updateSimulation] = commands
 
   context.subscriptions.push(vscode.commands.registerCommand('tixyel-widget.' + templateWidget.name, templateWidget.run))
   context.subscriptions.push(vscode.commands.registerCommand('tixyel-widget.' + cTemplateWidget.name, cTemplateWidget.run))
@@ -23,6 +24,7 @@ async function activate(context) {
   context.subscriptions.push(vscode.commands.registerCommand('tixyel-widget.' + finishedFiles.name, finishedFiles.run))
   context.subscriptions.push(vscode.commands.registerCommand('tixyel-widget.' + finishThisWidget.name, finishThisWidget.run))
   context.subscriptions.push(vscode.commands.registerCommand('tixyel-widget.' + generateSimulationRaw.name, generateSimulationRaw.run))
+  context.subscriptions.push(vscode.commands.registerCommand('tixyel-widget.' + updateSimulation.name, updateSimulation.run))
 }
 
 function deactivate() {}

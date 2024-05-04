@@ -4,7 +4,27 @@ const CleanCSS = require('clean-css')
 const { obfuscate } = require('javascript-obfuscator')
 
 module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /** @type {Object} */ finishedFiles) {
-  let result = finishedFiles
+  let result = finishedFiles,
+    simulation
+
+  simulation = obfuscate(fs.readFileSync(path.resolve(allFiles[0].path, '../../../') + '\\simulation.js', 'utf8'), {
+    'compact': true,
+    'controlFlowFlattening': false,
+    'deadCodeInjection': false,
+    'debugProtection': false,
+    'disableConsoleOutput': false,
+    'identifierNamesGenerator': 'hexadecimal',
+    'log': false,
+    'renameGlobals': false,
+    'rotateStringArray': false,
+    'selfDefending': false,
+    'shuffleStringArray': false,
+    'splitStrings': false,
+    'stringArray': false,
+    'stringArrayEncoding': ['none', 'base64', 'rc4'],
+    'stringArrayThreshold': 0.75,
+    'unicodeEscapeSequence': false,
+  })
 
   for await (let { fileName, path: filePath } of allFiles) {
     result = {
@@ -56,10 +76,11 @@ module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /*
         break
 
       case 'isHtml':
-        result[key].formated = content
-          .match(/<body>([\s\S]*?)<\/body>/i)[0]
-          .match(/<script[^>]*src=".*?">.*?<\/script>|<main>.*?<\/main>/gs)
-          .join('\n')
+        content = content.match(/<body>([\s\S]*?)<\/body>/i)[0].match(/<script[^>]*src=".*?">.*?<\/script>|<main>.*?<\/main>/gs)
+
+        simulation.length && content.unshift(`<script>${simulation}</script>\n`)
+
+        result[key].formated = content.join('\n')
         break
 
       default:

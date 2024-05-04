@@ -6,7 +6,7 @@ const { createFile } = require('../../functions/manageFs')
 const { getGist, getGists, runUpdate, runCreate } = require('../../functions/gistManage')
 
 module.exports = {
-  name: 'generateSimulationRaw',
+  name: 'updateSimulation',
   run: async ({ fsPath }) => {
     if (!vscode.workspace.workspaceFolders) return vscode.window.showInformationMessage('Você precisa abrir uma workspace ou uma pasta')
 
@@ -37,27 +37,8 @@ module.exports = {
         },
       })
 
-    const updateFields = async (/** @type {String} */ git_raw) => {
-      return createFile(
-        fsPath + '\\' + 'development' + '\\' + 'cf.json',
-        fs
-          .readFileSync(fsPath + '\\' + 'development' + '\\' + 'cf.json', 'utf8')
-          .replace(/"version":\s*{[^}]+}/, `"version": {\n    "type": "hidden",\n    "label": "Simulation ${version}",\n    "group": "Debug Settings"\n  }`)
-          .replace(
-            /"simulation":\s*{[^}]+}/,
-            `"simulation": {\n    "type6": "text",\n    "label": "Simulation script",\n    "value": "${git_raw}",\n    "group": "Debug Settings"\n  }`,
-          ),
-      )
-    }
-
-    const callback = function (/** @type {Object} */ res) {
-        const { raw_url } = Object.values(res.files)[0]
-
-        if (regex.raw_pattern.test(raw_url))
-          updateFields(raw_url.replace(regex.raw_pattern, regex.raw_replace)).then(() =>
-            vscode.window.showInformationMessage('Custom fields atualizado com sucesso!'),
-          )
-        else return vscode.window.showInformationMessage('Ocorreu algum erro...')
+    const callback = function () {
+        vscode.window.showInformationMessage('Simulation atualizado com sucesso!')
       },
       updateSimulation = async (/** @type {Object} */ item) => {
         return await getGist(item.id, headers, async (/** @type {Object} */ res) => {
@@ -67,7 +48,7 @@ module.exports = {
 
           content.length && (await createFile(path.dirname(fsPath) + '\\' + 'simulation.js', content))
 
-          return callback(res)
+          return callback()
         })
       }
 

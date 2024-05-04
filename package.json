@@ -42,6 +42,10 @@
       {
         "command": "tixyel-widget.generateSimulationRaw",
         "title": "Generate simulation raw"
+      },
+      {
+        "command": "tixyel-widget.updateSimulation",
+        "title": "Update simulation"
       }
     ],
     "menus": {
@@ -68,6 +72,10 @@
         },
         {
           "command": "tixyel-widget.generateSimulationRaw",
+          "when": "false"
+        },
+        {
+          "command": "tixyel-widget.updateSimulation",
           "when": "false"
         }
       ],
@@ -99,6 +107,11 @@
         },
         {
           "command": "tixyel-widget.generateSimulationRaw",
+          "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
+          "group": "tixyel"
+        },
+        {
+          "command": "tixyel-widget.updateSimulation",
           "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
           "group": "tixyel"
         }
