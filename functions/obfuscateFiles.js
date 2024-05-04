@@ -78,7 +78,9 @@ module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /*
       case 'isHtml':
         content = content.match(/<body>([\s\S]*?)<\/body>/i)[0].match(/<script[^>]*src=".*?">.*?<\/script>|<main>.*?<\/main>/gs)
 
-        simulation.length && content.unshift(`<script>${simulation}</script>\n`)
+        console.log(simulation)
+
+        simulation && content.unshift(`<script>${simulation}</script>\n`)
 
         result[key].formated = content.join('\n')
         break
