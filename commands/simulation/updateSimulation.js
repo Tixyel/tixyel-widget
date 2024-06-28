@@ -54,13 +54,27 @@ module.exports = {
 
     getGists(headers, async (/** @type {Array} */ res) => {
       if (Array.isArray(res)) {
-        res = res.filter(({ description }) => description.includes('Simulation')).slice(0, 5)
+        res = res.filter(({ description }) => description.includes('Simulation') && description.match(regex.version)).slice(0, 5)
 
-        if (res.some(({ description }) => description.match(regex.version)[0] > version))
-          updateSimulation(res.find(({ description }) => description.match(regex.version)[0] > version))
-        else if (res.some(({ description }) => description.includes(version)))
+        if (
+          res.some(({ description }) => {
+            let match = description.toString().match(regex.version)
+
+            return match != null ? match[0] > version : false
+          })
+        ) {
+          let data = res.find(({ description }) => {
+            let match = description.toString().match(regex.version)
+
+            return match != null ? match[0] > version : false
+          })
+
+          updateSimulation(data)
+        } else if (res.some(({ description }) => description.includes(version))) {
           runUpdate(res.find(({ description }) => description.includes(version)).id, headers, body, callback)
-        else runCreate(headers, body, callback)
+        } else {
+          runCreate(headers, body, callback)
+        }
       } else console.error(res)
     })
   },
