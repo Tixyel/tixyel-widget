@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const CleanCSS = require('clean-css')
 const { obfuscate } = require('javascript-obfuscator')
+const convertNcssToCss = require('./convertNcssToCss')
 
 module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /** @type {Object} */ finishedFiles) {
   let result = finishedFiles,
@@ -50,6 +51,8 @@ module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /*
     switch (type) {
       case 'isCss':
         // @ts-ignore
+        content = convertNcssToCss(content)
+
         result[key].formated = `\n<style>${new CleanCSS({}).minify(content).styles}</style>`
         break
 
