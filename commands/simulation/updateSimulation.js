@@ -60,7 +60,11 @@ module.exports = {
           res.some(({ description }) => {
             let match = description.toString().match(regex.version)
 
-            return match != null ? match[0] > version : false
+            if (match == null || !match || !match[0] || (match[0] && typeof match[0] != 'string')) return false
+
+            let resVersion = match[0]
+
+            return `${resVersion}`.localeCompare(version, undefined, { numeric: true }) === 1
           })
         ) {
           let data = res.find(({ description }) => {
@@ -73,7 +77,7 @@ module.exports = {
             return `${resVersion}`.localeCompare(version, undefined, { numeric: true }) === 1
           })
 
-          updateSimulation(data)
+          if (data) updateSimulation(data)
         } else if (res.some(({ description }) => description.includes(version))) {
           runUpdate(res.find(({ description }) => description.includes(version)).id, headers, body, callback)
         } else {
