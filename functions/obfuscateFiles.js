@@ -1,12 +1,12 @@
-const fs = require('fs')
-const path = require('path')
-const CleanCSS = require('clean-css')
-const { obfuscate } = require('javascript-obfuscator')
-const convertNcssToCss = require('./convertNcssToCss')
+const fs = require('fs');
+const path = require('path');
+const CleanCSS = require('clean-css');
+const { obfuscate } = require('javascript-obfuscator');
+const convertNcssToCss = require('./convertNcssToCss');
 
 module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /** @type {Object} */ finishedFiles) {
   let result = finishedFiles,
-    simulation
+    simulation;
 
   simulation = obfuscate(fs.readFileSync(path.resolve(allFiles[0].path, '../../../') + '\\simulation.js', 'utf8'), {
     'compact': true,
@@ -25,7 +25,7 @@ module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /*
     'stringArrayEncoding': ['none', 'base64', 'rc4'],
     'stringArrayThreshold': 0.75,
     'unicodeEscapeSequence': false,
-  })
+  });
 
   for await (let { fileName, path: filePath } of allFiles) {
     result = {
@@ -37,24 +37,24 @@ module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /*
             ...acc[key],
             format: path.extname(fileName).replace('.jsx', '.js'),
             content: fs.readFileSync(filePath, 'utf8'),
-          }
+          };
 
-          return acc
+          return acc;
         }, {}),
-    }
+    };
   }
 
   Object.entries(result).forEach(([key, { format, content }]) => {
     let type = (format == '.css' && 'isCss') || (format == '.js' && 'isJs') || (format == '.html' && 'isHtml'),
-      newContent = content
+      newContent = content;
 
     switch (type) {
       case 'isCss':
         // @ts-ignore
-        content = convertNcssToCss(content)
+        content = convertNcssToCss(content);
 
-        result[key].formated = `\n<style>${new CleanCSS({}).minify(content).styles}</style>`
-        break
+        result[key].formated = `\n<style>${new CleanCSS({}).minify(content).styles}</style>`;
+        break;
 
       case 'isJs':
         newContent = obfuscate(content, {
@@ -74,35 +74,33 @@ module.exports = async function obfuscateFiles(/** @type {Array} */ allFiles, /*
           'stringArrayEncoding': ['none', 'base64', 'rc4'],
           'stringArrayThreshold': 0.75,
           'unicodeEscapeSequence': false,
-        })
-        result[key].formated = `<script>${newContent}</script>`
-        break
+        });
+        result[key].formated = `<script>${newContent}</script>`;
+        break;
 
       case 'isHtml':
-        content = content.match(/<body>([\s\S]*?)<\/body>/i)[0].match(/<script[^>]*src=".*?">.*?<\/script>|<main>.*?<\/main>/gs)
+        content = content.match(/<body>([\s\S]*?)<\/body>/i)[0].match(/<script[^>]*src=".*?">.*?<\/script>|<main>.*?<\/main>/gs);
 
-        console.log(simulation)
+        simulation && content.unshift(`<script>${simulation}</script>\n`);
 
-        simulation && content.unshift(`<script>${simulation}</script>\n`)
-
-        result[key].formated = content.join('\n')
-        break
+        result[key].formated = content.join('\n');
+        break;
 
       default:
-        result[key].formated = content
-        break
+        result[key].formated = content;
+        break;
     }
-  })
+  });
 
   return Object.entries(
     Object.entries(result).reduce((acc, [key, { formated }]) => {
-      if (['HTML', 'CF'].some((word) => key.includes(word))) acc[key] = formated
+      if (['HTML', 'CF'].some((word) => key.includes(word))) acc[key] = formated;
       else {
-        acc['HTML.txt'] += '\n' + formated
-        acc[key] = ''
+        acc['HTML.txt'] += '\n' + formated;
+        acc[key] = '';
       }
 
-      return acc
+      return acc;
     }, {}),
-  )
-}
+  );
+};
