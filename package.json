@@ -67,27 +67,27 @@
         {
           "command": "tixyel-widget.completeTemplateWidget",
           "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
-          "group": "tixyel-template"
+          "group": "tixyel-widget@1"
         },
         {
           "command": "tixyel-widget.generateFinishedFiles",
           "when": "explorerResourceIsFolder && resourceFilename == 'development'",
-          "group": "tixyel-obfuscator"
+          "group": "tixyel-widget@2"
         },
         {
           "command": "tixyel-widget.generateWidgetIo",
           "when": "explorerResourceIsFolder && resourceFilename == 'finished'",
-          "group": "tixyel-finish"
+          "group": "tixyel-widget@3"
         },
         {
           "command": "tixyel-widget.finishThisWidget",
           "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
-          "group": "tixyel-finish"
+          "group": "tixyel-widget@4"
         },
         {
           "command": "tixyel-widget.updateSimulation",
           "when": "explorerResourceIsFolder && resourceFilename != 'finished' && resourceFilename != 'widget.io' && resourceFilename != 'development'",
-          "group": "tixyel"
+          "group": "tixyel-widget@5"
         }
       ]
     },
